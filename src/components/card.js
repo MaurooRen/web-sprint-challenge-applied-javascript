@@ -20,7 +20,29 @@ const Card = (article) => {
   // </div>
   //
 
-  console.log(article)
+  const cardDiv = document.createElement('div')
+  const headlineDiv = document.createElement('div')
+  const authorDiv = document.createElement('div')
+  const imgDiv = document.createElement('div')
+  const img = document.createElement('img')
+  const span = document.createElement('span')
+
+  cardDiv.classList.add('card')
+  headlineDiv.classList.add('headline')
+  authorDiv.classList.add('author')
+  imgDiv.classList.add('img-container')
+
+  headlineDiv.textContent = article.headline
+  img.src = article.authorPhoto
+  span.textContent = article.authorName
+
+  cardDiv.appendChild(headlineDiv)
+  cardDiv.appendChild(authorDiv)
+  authorDiv.appendChild(imgDiv)
+  imgDiv.appendChild(img)
+  authorDiv.appendChild(span)
+
+  return cardDiv
 }
 
 const cardAppender = (selector) => {
@@ -34,12 +56,28 @@ const cardAppender = (selector) => {
   //
 
   const URL = 'https://lambda-times-api.herokuapp.com/articles'
+  const cardContainer = document.querySelector(selector)
 
   const fetchArticles = (event) => {
     axios.get(URL)
       .then(res => {
-        console.log('Yey!')
-        console.log(res.data.articles)        
+
+        res.data.articles.bootstrap.forEach(item => {
+          cardContainer.appendChild(Card(item))
+        })
+        res.data.articles.javascript.forEach(item => {
+          cardContainer.appendChild(Card(item))
+        })
+        res.data.articles.technology.forEach(item => {
+          cardContainer.appendChild(Card(item))
+        })
+        res.data.articles.jquery.forEach(item => {
+          cardContainer.appendChild(Card(item))
+        })
+        res.data.articles.node.forEach(item => {
+          cardContainer.appendChild(Card(item))
+        })
+
       })
       .catch(err => {
         console.log('Ups!')
